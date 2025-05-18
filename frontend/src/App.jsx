@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
-const SERVER_URL = "http://localhost:5000";
+const SERVER_URL = "https://chat-app-01-bt1u.onrender.com";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -57,18 +57,18 @@ function App() {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
 
-  const sendMessage = () => {
-    if (input.trim()) {
-      socketRef.current.emit("message", { name: username, text: input });
-      setInput("");
-      socketRef.current.emit("typing", "");
-    }
-  };
-
   const handleTyping = (e) => {
-    setInput(e.target.value);
-    socketRef.current.emit("typing", username);
-  };
+  setInput(e.target.value);
+  socketRef.current.emit("typing", username);
+};
+
+const sendMessage = () => {
+  if (input.trim()) {
+    socketRef.current.emit("message", { name: username, text: input });
+    setInput("");
+    socketRef.current.emit("stop_typing", username);
+  }
+};
 
   const handleJoin = () => {
     const trimmed = nameInput.trim();
